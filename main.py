@@ -89,22 +89,27 @@ def matches(order, question):
         if month_name in question and date.month != month_number:
             return False
 
-    region = str(order.get("region", "")).lower()
+    # Region filter
+    regions = ["north", "south", "east", "west", "central"]
+    mentioned_regions = [r for r in regions if r in question]
+
+    if mentioned_regions:
+        order_region = str(order.get("region", "")).lower()
+        if order_region not in mentioned_regions:
+            return False
+
+    # Product filter
     product = str(order.get("product", "")).lower()
-    customer = str(order.get("customer", "")).lower()
-
-    if region and region in question:
-        return True
-
     if product and product in question:
         return True
 
+    # Customer filter
+    customer = str(order.get("customer", "")).lower()
     if customer and customer in question:
         return True
 
+    # If no product/customer was mentioned, the region and date filters are enough
     return True
-
-
 def calculate(question):
     question = question.lower()
 
