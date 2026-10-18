@@ -156,6 +156,11 @@ def calculate(question):
     if "how many" in question or "number of" in question:
         return count
 
+    if "average" in question:
+        if count == 0:
+            return 0
+        return round(total / count, 2)
+
     return round(total, 2)
 
 
